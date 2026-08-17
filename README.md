@@ -37,7 +37,7 @@ entry at boot — no manual profile editing.
 ```powershell
 # install the package into the profile's node_modules (forwards to pnpm);
 # the bundle layer and loader entry are wired up automatically
-dsh plugin --profile desktop -- add <path-or-git-url-to-this-repo>
+dsh plugin --profile desktop -- add https://github.com/dnviti/dsh-mermaid-renderer.git
 ```
 
 ```powershell
