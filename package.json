@@ -10,6 +10,9 @@
     "./package.json": "./package.json"
   },
   "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    },
     "client": {
       "platform": "web",
       "inject": [
@@ -30,6 +33,7 @@
   ],
   "license": "MIT",
   "files": [
-    "lib"
+    "lib",
+    "cordis.patch.yml"
   ]
 }

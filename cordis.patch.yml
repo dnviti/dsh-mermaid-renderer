@@ -1,0 +1,12 @@
+# The dsh-mermaid-renderer bundle patch — applied automatically by DSH when
+# this package is a profile bundle layer (`dsh.profile.bundles`), declared via
+# `dsh.bundle.patch` in package.json. It registers the loader entry that makes
+# the package appear on Settings → Plugins and lets the client module scan
+# (`dsh.client` in package.json) serve its bundle at /plugins/<id>/client.js.
+#
+# The entry is inserted after the base/web-app layers; the profile's own
+# cordis.patch.yml (and any --patch overlays) still apply on top.
+
+- insert:
+    - id: dsh-mermaid-renderer
+      name: dsh-mermaid-renderer

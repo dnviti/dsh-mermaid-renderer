@@ -28,30 +28,31 @@ vector SVG, with pan/zoom in the message card and a fullscreen viewer.
 ## Install
 
 Requires a DSH profile (this repo's examples use the `desktop` profile — use
-whichever profile your app boots; `~/.dsh/profiles/<name>`).
+whichever profile your app boots; `~/.dsh/profiles/<name>`). This package
+declares `dsh.bundle.patch`, so installing it activates it as a profile
+*bundle layer* automatically: `dsh plugin` appends it to the profile's
+`dsh.profile.bundles`, and the bundled `cordis.patch.yml` registers the loader
+entry at boot — no manual profile editing.
 
 ```powershell
-# 1. install the package into the profile's node_modules (forwards to pnpm)
+# install the package into the profile's node_modules (forwards to pnpm);
+# the bundle layer and loader entry are wired up automatically
 dsh plugin --profile desktop -- add <path-or-git-url-to-this-repo>
-
-# 2. register it as a loader entry — append to
-#    %USERPROFILE%\.dsh\profiles\desktop\cordis.patch.yml
-```
-
-```yaml
-- insert:
-    - id: dsh-mermaid-renderer
-      name: dsh-mermaid-renderer
 ```
 
 ```powershell
-# 3. verify the entry composes, then restart the app
+# verify the entry composes, then restart the app
 dsh --profile desktop --dump-config | Select-String mermaid
 ```
 
 After restart the plugin appears on **Settings → Plugins**, and any
 ```mermaid block in chat renders with the interactive card.
 
+> Upgrading from a version that predates `dsh.bundle`: if you followed the old
+> instructions and manually appended the `dsh-mermaid-renderer` insert to the
+> profile's `cordis.patch.yml`, **remove that insert** — the bundle patch now
+> supplies it, and a duplicate loader entry id fails boot.
+>
 > Plugin-set changes take effect on restart (package metadata is cached per
 > name). The plugin is also usable as a *dynamic* session plugin via the
 > cordis tooling — this package is the publishable static form.
@@ -71,6 +72,8 @@ flowchart LR
 
 ## Package layout
 
+- `cordis.patch.yml` — the bundle patch: registers the `dsh-mermaid-renderer`
+  loader entry (applied automatically while the package is a profile bundle).
 - `lib/index.js` — host half: empty apply so the package becomes a loader
   entry and its client bundle is served.
 - `lib/client.js` — client half: registers via `window.__ModuleLoader__.load`
